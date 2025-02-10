@@ -14,9 +14,6 @@ export default defineNuxtConfig({
     'primeflex/primeflex.css',
     '~/assets/styles/global.css'
   ],
-  // plugins: [
-  //   '~/plugins/primevue.ts',
-  // ],
   modules: [
     '@primevue/nuxt-module',
     '@pinia/nuxt',
