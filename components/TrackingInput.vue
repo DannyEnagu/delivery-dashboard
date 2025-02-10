@@ -1,9 +1,13 @@
 <template>  
-    <form class="flex align-items-center gap-0 bg-white shadow-2 h-3rem border-round-md" @submit.prevent="handleSubmit">
+    <form
+      class="flex align-items-center gap-0 bg-white shadow-2 h-3rem border-round-md"
+      @submit.prevent="handleSubmit"
+    >
       <InputText
         v-model="trackingNumber"
         placeholder="Enter tracking number"
         class="flex-1 tracking-input h-full"
+        :class="{ 'border-red-500 border-1': props.isError }"
       />  
       <Button
         type="submit"
@@ -17,12 +21,16 @@
   import { ref, defineEmits } from 'vue';
   import InputText from 'primevue/inputtext';
   import Button from 'primevue/button';
+
+  const props = defineProps<{
+    isError: boolean;
+  }>();
   
   const trackingNumber = ref('');  
-  const emit = defineEmits(['submit']);  
+  const emit = defineEmits(['submit']);
   
   const handleSubmit = () => {  
-    emit('submit', trackingNumber.value);  
+    emit('submit', trackingNumber.value);
   };  
   </script>
 
