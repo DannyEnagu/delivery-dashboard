@@ -5,11 +5,18 @@ import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  runtimeConfig: {
+    wsUrl: process.env.NUXT_WEBSOCKET_URL,
+    mapBoxToken: process.env.NUXT_MAPBOX_TOKEN,
+  },
   css: [
     'primeflex/themes/primeone-light.css ',
     'primeflex/primeflex.css',
     '~/assets/styles/global.css'
   ],
+  // plugins: [
+  //   '~/plugins/primevue.ts',
+  // ],
   modules: [
     '@primevue/nuxt-module',
     '@pinia/nuxt',

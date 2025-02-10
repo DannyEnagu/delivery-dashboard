@@ -15,7 +15,7 @@
   const map = ref<mapboxgl.Map | null>(null);  
   const marker = ref<mapboxgl.Marker | null>(null);
 
-  const createRouteHistoryGeoJSON = (history: [number, number][]): GeoJSON.Feature<GeoJSON.LineString> => {  
+  const createRouteHistoryGeoJSON = (history: TrackingData['routeHistory']): GeoJSON.Feature<GeoJSON.LineString> => {  
         return {  
             type: 'Feature',  
             properties: {},  
@@ -26,7 +26,7 @@
         };
     }; 
 
-    const createRoutePointsGeoJSON = (history: [number, number][]): GeoJSON.FeatureCollection<GeoJSON.Point> => {  
+    const createRoutePointsGeoJSON = (history: TrackingData['routeHistory']): GeoJSON.FeatureCollection<GeoJSON.Point> => {  
         const features: GeoJSON.Feature<GeoJSON.Point>[] = history.map(coord => ({  
             type: 'Feature',  
             properties: {},  
@@ -44,16 +44,17 @@
   
   onMounted(() => {
     // TODO: use environment variables for the token
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnlwbHVzMjIyIiwiYSI6ImNtNnc2cW8yOTBieG8yaXFxN3piampwN2EifQ.KOCl7C0R6jsSmk2XgKU1tA'; // Replace with your Mapbox token  
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnlwbHVzMjIyIiwiYSI6ImNtNnc2cW8yOTBieG8yaXFxN3piampwN2EifQ.KOCl7C0R6jsSmk2XgKU1tA';
   
     map.value = new mapboxgl.Map({  
-      container: mapContainer.value as HTMLElement,  
+      container: mapContainer.value as HTMLElement,
       style: 'mapbox://styles/mapbox/streets-v12',  
       center: [20, 0], // Initial map center  
       zoom: 3,
     });
 
-    map.value.on('load', () => {  
+    // @ts-ignore 
+    map.value!.on('load', () => {  
         // Add the route history source  
         map.value!.addSource('route-history', {  
             type: 'geojson',  
@@ -139,14 +140,14 @@
                 const newLat = start.lat + (newLngLat[1] - start.lat) * animationProgress;  
                 marker.value!.setLngLat([newLng, newLat]);  
 
-                requestAnimationFrame(frame);  
+                requestAnimationFrame(frame);
             } else {  
                 // Animation complete  
                 marker.value!.setLngLat(newLngLat); // Ensure final position is exact  
             }  
         }  
 
-        requestAnimationFrame(frame);  
+        requestAnimationFrame(frame);
     }; 
   
   const updateMap = (trackingData: TrackingData) => {  
@@ -161,7 +162,7 @@
         map.value.flyTo({  
             center: [trackingData.location.lng, trackingData.location.lat],  
             essential: true,  
-            zoom: 10,
+            zoom: 12,
         });
     
         if (marker.value) {
@@ -173,9 +174,10 @@
             return;
         }
 
-        // Create a marker and add it to the map.  
+        // Create a marker and add it to the map. 
         marker.value = new mapboxgl.Marker()
             .setLngLat([trackingData.location.lng, trackingData.location.lat])
+            // @ts-ignore
             .addTo(map.value!);
     }  
   };
