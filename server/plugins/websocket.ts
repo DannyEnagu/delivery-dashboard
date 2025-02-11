@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from 'ws';  
 import { trackingDataMap } from '../data/mapData';
 
-export default defineNitroPlugin((nitroApp) => {  
+export default defineNitroPlugin((nitroApp) => {
   const wss = new WebSocketServer({  
     port: 3001,  
   });
@@ -10,7 +10,6 @@ export default defineNitroPlugin((nitroApp) => {
     console.log('Client connected to WebSocket');  
 
     ws.on('message', (message) => {  
-      console.log(`Received: ${message}`);
       const trackingData = trackingDataMap[message.toString()];  
 
       // Example: Simulate sending location updates every 30 seconds
@@ -27,6 +26,7 @@ export default defineNitroPlugin((nitroApp) => {
           trackingData.routeHistory.push([currLocation.lng, currLocation.lat]);
           index = trackingData.routeHistory.length - 1;
         }
+
         const intervalId = setInterval(() => {  
           if (index >= trackingData.routeHistory.length) {  
             clearInterval(intervalId);
@@ -40,8 +40,6 @@ export default defineNitroPlugin((nitroApp) => {
               lng: trackingData.routeHistory[index][0],
             },
           };
-
-          console.log('Sending:', updatedLocation);
 
           ws.send(JSON.stringify(updatedLocation));  
           index++;  

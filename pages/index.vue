@@ -1,12 +1,16 @@
 <template>  
-    <div class=" flex h-screen pt-2rem">
+    <div class="flex h-screen pt-2rem">
       <div class="w-25rem pt-5 px-3 border-right border-200">
-        <TrackingInput @submit="handleTrackingSubmit" />  
+        <TrackingInput
+          :is-error="isTrackingNumberValid"
+          @submit="handleTrackingSubmit"
+        />  
         <StatusTimeline :tracking-data="trackingData" />  
       </div>
       <div class="flex-1">
         <MapComponent :tracking-data="trackingData" />  
       </div>
+      <Toast />
     </div>
   </template>  
   
@@ -16,11 +20,17 @@
   import MapComponent from '../components/MapComponent.vue';  
   import StatusTimeline from '../components/StatusTimeline.vue';  
   import type { TrackingData, Location } from '../types/tracking';
-  import { useWebSocket } from '../composables/useWebSocket';  
-  
+  import { useWebSocket } from '../composables/useWebSocket';
+  import Toast from 'primevue/toast';
+  import { useToast } from 'primevue/usetoast';
+
+  const toast = useToast();
   const trackingNumber = ref('');  
   const trackingData = ref<TrackingData | null>(null)
   
+  // Validate tracking number
+  const isTrackingNumberValid = computed(() => trackingData.value === null && trackingNumber.value.length > 0);
+
   // WebSocket setup  
   const websocketURL = 'ws://localhost:3001';
   const { data: wsData, isConnected, error, send } = useWebSocket(websocketURL);  
@@ -42,7 +52,13 @@
   
     if (error.value) {  
       console.error('Error fetching tracking data:', error.value);  
-      trackingData.value = null;  
+      trackingData.value = null;
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: `Invalid tracking number: ${trackingNumber.value}`,
+        life: 5000,
+      });
       return;  
     }  
   
@@ -52,7 +68,6 @@
   
   // Update tracking data from WebSocket messages  
   watch(wsData, (newWsData) => {
-    console.log('newWsData', newWsData); 
     if (newWsData && newWsData.trackingNumber === trackingNumber.value) {  
       // Update location.
       // Important:  Handle potential missing fields gracefully.  

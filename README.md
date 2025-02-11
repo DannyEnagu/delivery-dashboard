@@ -1,6 +1,6 @@
-# Nuxt Minimal Starter
+# Delivery Tracking Dashboard
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Keep track of ongoing package delivery just by searching the tracking number.
 
 ## Setup
 
@@ -38,38 +38,9 @@ yarn dev
 bun run dev
 ```
 
-## Production
+## Example
 
-Build the application for production:
+Type the numbers bellow on the search bar
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- 12345
+- 67890
