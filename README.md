@@ -1,6 +1,26 @@
-# Delivery Tracking Dashboard
+# Delivery Tracking Dashboard with Map Integration
 
 Keep track of ongoing package delivery just by searching the tracking number.
+
+## Challenge
+
+Build a delivery tracking dashboard with the following features:
+
+- Input a tracking number to fetch shipment details from a mock API.
+- Display a map (using Google Maps, Leaflet, or Mapbox) showing the current location of the package and its route history.
+- Add a status timeline showing key milestones (e.g., “Shipped,” “In Transit,” “Out for Delivery”).
+- Automatically refresh the delivery status and location every 30 seconds using WebSocket.
+- Allow users to zoom into specific route points on the map.
+- Add animations for map markers when the location updates.
+- Use TypeScript for better type safety.
+
+## Tools
+
+- Vue.js/Nuxt.js
+- Pinia
+- PrimeVue
+- PrimeFlex
+- PrimeIcons
 
 ## Setup
 
